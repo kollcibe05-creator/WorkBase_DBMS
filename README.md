@@ -1,16 +1,10 @@
-# Phase 3 CLI+ORM Project Template
+# WorkBase_DBMS
 
-## Learning Goals
+## Welcome to WorkBase_DBMS
 
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
+WorkBase_DBMS is a CLI + SQL + ORM  backend project aimed at resolving the complexity of organizing employees' data with consistency and persisting the changes to the Database. It implements sqlalchemy, SQL and OOP to model the database and ensure accuracy while accessing the data
 
----
-
-## Introduction
-
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+## File Structure
 
 Take a look at the directory structure:
 
@@ -28,18 +22,13 @@ Take a look at the directory structure:
     └── helpers.py
 ```
 
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
-
----
 
 ## Generating Your Environment
 
-You might have noticed in the file structure- there's already a Pipfile!
+You might have noticed in the file structure- there's  a Pipfile!
 
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
+Install  the dependencies  you'll need to navigate the file by 
+adding them to the `Pipfile`. Run the commands:
 
 ```console
 pipenv install
@@ -53,7 +42,7 @@ pipenv shell
 A CLI is, simply put, an interactive script and prompts the user and performs
 operations based on user input.
 
-The project template has a sample CLI in `lib/cli.py` that looks like this:
+This project template has the CLI in `lib/cli.py` that looks like this:
 
 ```py
 # lib/cli.py
