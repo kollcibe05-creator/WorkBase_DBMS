@@ -4,6 +4,19 @@
 
 WorkBase_DBMS is a CLI + SQL + ORM  backend project aimed at resolving the complexity of organizing employees' data with consistency and persisting the changes to the Database. It implements sqlalchemy, SQL and OOP to model the database and ensure accuracy while accessing the data
 
+The ideological business requirements are:
+
+1. An Employee can only be in `one` Department.
+2. A Department can have `many` Employees.
+3. A Review belongs to `one` Employee and one employee can have `many` Reviews.
+_______
+
+
+### Tech Stack
+- Python
+- Markdown
+- SQL
+
 ## File Structure
 
 Take a look at the directory structure:
@@ -89,73 +102,46 @@ def exit_program():
     exit()
 ```
 
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
+You can run the template CLI with:
+```
+ python lib/cli.py
+ ```
+Or include the shebang and make it executable with:
+```
+chmod +x lib/cli.py
 
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
+```
 
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
+Which afterwards you'll run the CLI with:
 
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
+```
+./lib/cli.py
 
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
+```
+in the root directory.Alternatively you can change directory into the *lib* directory and use:
 
-- User interface
-- Data persistence
-- Problem domain rules and logic
+```
+./cli.py
 
----
+```
+The template CLI will ask for input, manipulate your dabatase to do some work, and accomplish your sort of task.
 
-## Updating README.md
+Past that, CLIs can be whatever you'd like, as long as you follow the requirements.
 
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
 
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
 
-### What Goes into a README?
 
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
 
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
+# Author
+*Collins Kibet*
 
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+## [License](LICENSE)
 
----
+MIT License
+Copyright (c) 2025 Collins Kibet
 
-## Conclusion
 
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
+# Contact info
+* Email : kollcibe05@gmail.com
 
-Happy coding!
 
----
-
-## Resources
-
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
