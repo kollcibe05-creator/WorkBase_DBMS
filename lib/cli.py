@@ -30,8 +30,12 @@
 
 # lib/cli.py (Example Snippet)
 
-import lib.helpers as h
-from lib.models.__init__ import recreate_db
+from  . import helpers as h
+from .models.__init__ import recreate_db
+
+from .models.department import Department
+from .models.employee import Employee
+from .models.review import Review
 
 def main():
     # 1. Setup the database
