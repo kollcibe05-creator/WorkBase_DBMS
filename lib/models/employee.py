@@ -1,40 +1,72 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, select, func
 from sqlalchemy.orm import relationship
 from datetime import date
-from .__init__ import Base
+from .__init__ import Base, Session
 
 class Employee(Base):
     __tablename__ = 'employees'
-
-    # Attributes defined using Column
     id = Column(Integer, primary_key=True)
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     hire_date = Column(Date, default=date.today)
     salary = Column(Integer)
-
-    # Foreign Key for Many-to-One
     department_id = Column(Integer, ForeignKey('departments.id'))
-
-    # Relationships
-    # Many-to-One: Employee belongs to one Department
     department = relationship("Department", back_populates="employees")
     
-    # One-to-Many (Reviewee): Employee is reviewed many times
+    # Reviews
     received_reviews = relationship(
-        "Review", 
-        foreign_keys="[Review.reviewee_id]", 
-        back_populates="reviewee", 
-        cascade="all, delete-orphan"
+        "Review", foreign_keys="[Review.reviewee_id]", back_populates="reviewee", cascade="all, delete-orphan"
     )
-    
-    # One-to-Many (Reviewer): Employee gives many reviews
     given_reviews = relationship(
-        "Review", 
-        foreign_keys="[Review.reviewer_id]", 
-        back_populates="reviewer", 
-        cascade="all, delete-orphan"
+        "Review", foreign_keys="[Review.reviewer_id]", back_populates="reviewer", cascade="all, delete-orphan"
     )
 
     def __repr__(self):
-        return f"<Employee(id={self.id}, name='{self.first_name} {self.last_name}')>"
+        return f"<Employee ID: {self.id}, Name: {self.first_name} {self.last_name}, Dept ID: {self.department_id}>"
+
+    # --- CRUD CLASS METHODS (Query/Create) ---
+
+    @classmethod
+    def get_all(cls):
+        with Session() as session:
+            return session.scalars(select(cls)).all()
+
+    @classmethod
+    def find_by_id(cls, id_):
+        with Session() as session:
+            return session.get(cls, int(id_)) 
+
+    @classmethod
+    def find_by_full_name(cls, first_name, last_name):
+        with Session() as session:
+            stmt = select(cls).where(
+                cls.first_name == first_name, 
+                cls.last_name == last_name
+            )
+            return session.scalar(stmt)
+
+    @classmethod
+    def create(cls, first_name, last_name, salary, department_id):
+        with Session() as session:
+            employee = cls(
+                first_name=first_name, 
+                last_name=last_name, 
+                salary=salary, 
+                department_id=department_id
+            )
+            session.add(employee)
+            session.commit()
+            return employee
+
+    # --- CRUD INSTANCE METHODS (Update/Delete) ---
+
+    def update(self):
+        with Session() as session:
+            session.merge(self)
+            session.commit()
+            return self
+
+    def delete(self):
+        with Session() as session:
+            session.delete(session.merge(self))
+            session.commit()
