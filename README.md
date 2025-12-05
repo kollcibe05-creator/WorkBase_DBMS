@@ -8,11 +8,11 @@ The ideological business requirements are:
 
 1. An Employee can only be in `one` Department.
 2. A Department can have `many` Employees.
-3. A Review belongs to `one` Employee and one employee can have `many` Reviews.
+3. A Review belongs to `one` Employee and `one` employee can have `many` Reviews.
 _______
 
 
-### Tech Stack
+## Tech Stack
 - Python
 - Markdown
 - SQL
@@ -171,6 +171,20 @@ in the root directory.Alternatively you can change directory into the *lib* dire
 The template CLI will ask for input, manipulate your dabatase to do some work, and accomplish your sort of task.
 
 Past that, CLIs can be whatever you'd like, as long as you follow the requirements.
+
+## Functionality
+# Department.py
+It contains the model `*Department*` which has setters and getters which validates the user input.
+It also 
+
+# Employee.py
+It contains the model `*Department*` which has setters and getters which validates the user input.
+It also
+
+# Review.py
+It contains the model `*Department*` which has setters and getters which validates the user input.
+It also 
+
 
 
 
