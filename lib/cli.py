@@ -197,7 +197,7 @@ def main():
             delete_employee()
         elif choice == "13":
             list_department_employees()
-            elif choice == "14":
+        elif choice == "14":
             create_review()
         elif choice == "15":
             find_review_by_id()
