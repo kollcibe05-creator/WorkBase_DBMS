@@ -4,6 +4,7 @@ from .models.__init__ import recreate_db
 from .models.department import Department
 from .models.employee import Employee
 from .models.review import Review
+from .debug import seed_database
 
 from .helpers import (
     exit_program,
@@ -53,7 +54,8 @@ def menu():
 
 def main():
     try:
-        recreate_db()
+        # recreate_db()
+        seed_database()
         print("Database initialized successfully.")
     except Exception as Error:
         print(f"Error setting up database: {Error}")

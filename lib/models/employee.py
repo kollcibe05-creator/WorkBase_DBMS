@@ -55,7 +55,8 @@ class Employee(Base):
             )
             session.add(employee)
             session.commit()
-            return employee
+            employee_id = employee.id
+            return employee_id
 
     def update(self):
         with Session() as session:

@@ -39,7 +39,8 @@ class Department(Base):
             dept = cls(name=name, location=location)
             session.add(dept)
             session.commit()
-            return dept
+            dept_id = dept.id
+            return dept_id
 
 
     def update(self):
