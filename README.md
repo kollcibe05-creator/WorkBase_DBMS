@@ -23,16 +23,20 @@ Take a look at the directory structure:
 
 ```console
 .
+├── LICENSE
 ├── Pipfile
 ├── Pipfile.lock
 ├── README.md
 └── lib
-    ├── models
-    │   ├── __init__.py
-    │   └── model_1.py
     ├── cli.py
     ├── debug.py
-    └── helpers.py
+    ├── helpers.py
+    └── models
+        ├── __init__.py
+        ├── department.py
+        ├── employee.py
+        └── review.py
+        
 ```
 
 
