@@ -178,11 +178,11 @@ It contains the model `*Department*` which has setters and getters which validat
 It also 
 
 # Employee.py
-It contains the model `*Department*` which has setters and getters which validates the user input.
+It contains the model `*Employee*` which has setters and getters which validates the user input.
 It also
 
 # Review.py
-It contains the model `*Department*` which has setters and getters which validates the user input.
+It contains the model `*Review*` which has setters and getters which validates the user input.
 It also 
 
 

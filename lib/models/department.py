@@ -27,6 +27,10 @@ class Department(Base):
         with Session() as session:
             return session.get(cls, int(id_)) 
 
+    # def find_by_name_raw(name):
+    # connection = engine.connect()
+    # result = connection.execute(text("SELECT * FROM departments WHERE name = :name"), {"name": name}).fetchone()
+    # return result
     @classmethod
     def find_by_name(cls, name):
         with Session() as session:
