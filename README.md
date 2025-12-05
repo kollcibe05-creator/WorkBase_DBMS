@@ -27,15 +27,18 @@ Take a look at the directory structure:
 ├── Pipfile
 ├── Pipfile.lock
 ├── README.md
-└── lib
-    ├── cli.py
-    ├── debug.py
-    ├── helpers.py
-    └── models
-        ├── __init__.py
-        ├── department.py
-        ├── employee.py
-        └── review.py
+├── lib
+│   ├── __init__.py
+│   ├── cli.py
+│   ├── debug.py
+│   ├── helpers.py
+│   └── models
+│       ├── __init__.py
+│       ├── department.py
+│       ├── employee.py
+│       └── review.py
+└── workbase.db
+
         
 ```
 
@@ -59,7 +62,7 @@ pipenv shell
 A CLI is, simply put, an interactive script and prompts the user and performs
 operations based on user input.
 
-This project template has the CLI in `lib/cli.py` that looks like this:
+This project template has the CLI in `lib/cli.py`, `sample`:
 
 ```py
 # lib/cli.py
@@ -92,21 +95,58 @@ if __name__ == "__main__":
     main()
 ```
 
-The helper functions are located in `lib/helpers.py`:
+The helper functions are located in `lib/helpers.py`, `Sample`:
 
 ```py
 # lib/helpers.py
 
-def helper_1():
-    print("Performing useful function#1.")
+
+
+from .models.department import Department
+from .models.employee import Employee
+from .models.review import Review 
+from sqlalchemy.exc import IntegrityError 
+
 
 
 def exit_program():
     print("Goodbye!")
     exit()
+
+def list_departments():
+    departments = Department.get_all()
+    if departments:
+        print("\n--- All Departments ---")
+        for department in departments:
+            print(department)
+        print("-----------------------")
+    else:
+        print("No departments found.")
+
+
+def find_department_by_name():
+    name = input("Enter the department's name: ")
+    department = Department.find_by_name(name)
+    print(department) if department else print(
+        f'Department "{name}" not found')
+
+
+def find_department_by_id():
+    id_ = input("Enter the department's id: ")
+    try:
+        department = Department.find_by_id(id_)
+        print(department) if department else print(f'Department {id_} not found')
+    except ValueError:
+        print("Invalid ID format. Please enter a number.")
+
 ```
 
 You can run the template CLI with:
+```
+python -m lib.cli
+
+```
+
 ```
  python lib/cli.py
  ```

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, select
 from sqlalchemy.orm import relationship
-from .__init__ import Base, Session # Import Session and Base
+from .__init__ import Base, Session 
 
 class Department(Base):
     __tablename__ = 'departments'
@@ -14,10 +14,8 @@ class Department(Base):
     )
 
     def __repr__(self):
-        # Adjusted for clearer output in the CLI
         return f"<Department ID: {self.id}, Name: {self.name}, Location: {self.location}>"
 
-    # --- CRUD CLASS METHODS (Query/Create) ---
 
     @classmethod
     def get_all(cls):
@@ -27,14 +25,13 @@ class Department(Base):
     @classmethod
     def find_by_id(cls, id_):
         with Session() as session:
-            # session.get() handles primary key lookups
             return session.get(cls, int(id_)) 
 
     @classmethod
     def find_by_name(cls, name):
         with Session() as session:
             stmt = select(cls).where(cls.name == name)
-            return session.scalar(stmt) # scalar returns one result or None
+            return session.scalar(stmt)
 
     @classmethod
     def create(cls, name, location):
@@ -44,17 +41,14 @@ class Department(Base):
             session.commit()
             return dept
 
-    # --- CRUD INSTANCE METHODS (Update/Delete) ---
 
     def update(self):
         with Session() as session:
-            # Use merge to attach the detached instance to the new session
             session.merge(self) 
             session.commit()
             return self
 
     def delete(self):
         with Session() as session:
-            # Use merge to attach before deleting
             session.delete(session.merge(self))
             session.commit()

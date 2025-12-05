@@ -13,7 +13,7 @@ class Employee(Base):
     department_id = Column(Integer, ForeignKey('departments.id'))
     department = relationship("Department", back_populates="employees")
     
-    # Reviews
+
     received_reviews = relationship(
         "Review", foreign_keys="[Review.reviewee_id]", back_populates="reviewee", cascade="all, delete-orphan"
     )
@@ -24,7 +24,6 @@ class Employee(Base):
     def __repr__(self):
         return f"<Employee ID: {self.id}, Name: {self.first_name} {self.last_name}, Dept ID: {self.department_id}>"
 
-    # --- CRUD CLASS METHODS (Query/Create) ---
 
     @classmethod
     def get_all(cls):
@@ -57,8 +56,6 @@ class Employee(Base):
             session.add(employee)
             session.commit()
             return employee
-
-    # --- CRUD INSTANCE METHODS (Update/Delete) ---
 
     def update(self):
         with Session() as session:

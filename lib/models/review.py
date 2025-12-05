@@ -12,7 +12,6 @@ class Review(Base):
     reviewee_id = Column(Integer, ForeignKey('employees.id'))
     reviewer_id = Column(Integer, ForeignKey('employees.id'))
 
-    # Relationships remain the same for ambiguity resolution
     reviewee = relationship(
         "Employee", foreign_keys=[reviewee_id], back_populates="received_reviews", 
         primaryjoin="Review.reviewee_id == Employee.id" 
@@ -25,7 +24,6 @@ class Review(Base):
     def __repr__(self):
         return f"<Review ID: {self.id}, Rating: {self.rating}, Reviewee: {self.reviewee_id}>"
     
-    # --- CRUD CLASS METHODS (Query/Create) ---
 
     @classmethod
     def get_all(cls):
@@ -50,7 +48,6 @@ class Review(Base):
             session.commit()
             return review
 
-    # --- CRUD INSTANCE METHODS (Update/Delete) ---
 
     def update(self):
         with Session() as session:

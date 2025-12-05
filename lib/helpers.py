@@ -1,29 +1,23 @@
-# lib/helpers.py
 
-from .models.department import Department # Use relative imports
+
+from .models.department import Department
 from .models.employee import Employee
-from .models.review import Review # Include Review for completeness
+from .models.review import Review 
 from sqlalchemy.exc import IntegrityError 
 
-# --- EXIT FUNCTION ---
+
 
 def exit_program():
     print("Goodbye!")
     exit()
 
-# ----------------------------------------------------------------------
-## Department Functions
-# ----------------------------------------------------------------------
-
 def list_departments():
     departments = Department.get_all()
     if departments:
-        print("\n--- All Departments ---")
         for department in departments:
             print(department)
-        print("-----------------------")
     else:
-        print("No departments found.")
+        print("No departments result.")
 
 
 def find_department_by_name():
@@ -39,7 +33,7 @@ def find_department_by_id():
         department = Department.find_by_id(id_)
         print(department) if department else print(f'Department {id_} not found')
     except ValueError:
-        print("Invalid ID format. Please enter a number.")
+        print(" Please enter a valid number.")
 
 
 def create_department():
@@ -47,11 +41,11 @@ def create_department():
     location = input("Enter the department's location: ")
     try:
         department = Department.create(name, location)
-        print(f'✅ Success: {department}')
+        print(f'Success: {department}')
     except IntegrityError as exc:
-        print(f"❌ Error: Department '{name}' already exists or data invalid.")
+        print(f"Error: Department '{name}' already exists or data invalid.")
     except Exception as exc:
-        print("❌ Error creating department: ", exc)
+        print("Error creating department: ", exc)
 
 
 def update_department():
@@ -67,9 +61,9 @@ def update_department():
             department.location = location
 
             department.update() 
-            print(f'✅ Success: {department}')
+            print(f'Success!!: {department}')
         except Exception as exc:
-            print("❌ Error updating department: ", exc)
+            print("Error updating department: ", exc)
     else:
         print(f'Department {id_} not found')
 
@@ -81,23 +75,18 @@ def delete_department():
     if department:
         try:
             department.delete()
-            print(f'🗑️ Department {id_} deleted (Employees cascaded).')
+            print(f'Department {id_} deleted.')
         except Exception as exc:
-            print("❌ Error deleting department: ", exc)
+            print("Error deleting department: ", exc)
     else:
         print(f'Department {id_} not found')
 
-# ----------------------------------------------------------------------
-## Employee Functions
-# ----------------------------------------------------------------------
 
 def list_employees():
     employees = Employee.get_all()
     if employees:
-        print("\n--- All Employees ---")
         for employee in employees:
             print(employee)
-        print("---------------------")
     else:
         print("No employees found.")
 
@@ -109,7 +98,7 @@ def find_employee_by_name():
     if employee:
         print(employee)
     else:
-        print(f"Employee {first_name} {last_name} not found.")
+        print(f"Employee named {first_name} {last_name} not found.")
 
 def find_employee_by_id():
     id_ = input("Enter the employee's id: ")
@@ -117,7 +106,7 @@ def find_employee_by_id():
         employee = Employee.find_by_id(id_)
         print(employee) if employee else print(f'Employee {id_} not found')
     except ValueError:
-        print("Invalid ID format. Please enter a number.")
+        print("Please enter a valid number.")
 
 def create_employee():
     first_name = input("Enter employee's first name: ")
@@ -128,17 +117,17 @@ def create_employee():
         salary = int(salary_str)
         dept_id = int(dept_id_str)
         
-        # Check if department exists (best handled in the model create method or here)
+
         if not Department.find_by_id(dept_id):
-            print(f"❌ Error: Department ID {dept_id} not found.")
+            print(f"Error: Department ID {dept_id} not found.")
             return
 
         employee = Employee.create(first_name, last_name, salary, dept_id)
-        print(f'✅ Success: {employee}')
+        print(f'Success: {employee}')
     except ValueError:
-        print("❌ Error: Salary and Department ID must be numbers.")
+        print("Err: Salary and Department ID must be numbers.")
     except Exception as exc:
-        print("❌ Error creating employee: ", exc)
+        print("Error creating employee: ", exc)
 
 
 def update_employee():
@@ -150,22 +139,21 @@ def update_employee():
             new_salary_str = input(f"Enter new salary (Current: {employee.salary}): ")
             if new_salary_str:
                 employee.salary = int(new_salary_str)
-            
-            # Example: Update department ID
+
             new_dept_id_str = input(f"Enter new department ID (Current: {employee.department_id}): ")
             if new_dept_id_str:
                 new_dept_id = int(new_dept_id_str)
                 if not Department.find_by_id(new_dept_id):
-                    print(f"❌ Error: Department ID {new_dept_id} not found. Update cancelled.")
+                    print(f" Err: Department ID {new_dept_id} not found. Update cancelled.")
                     return
                 employee.department_id = new_dept_id
 
             employee.update() 
-            print(f'✅ Success: {employee}')
+            print(f'Success: {employee}')
         except ValueError:
-            print("❌ Error: Salary or Department ID must be a number.")
+            print("Err: Salary or Department ID must be a number.")
         except Exception as exc:
-            print("❌ Error updating employee: ", exc)
+            print("Error updating employee: ", exc)
     else:
         print(f'Employee {id_} not found')
 
@@ -176,9 +164,9 @@ def delete_employee():
     if employee:
         try:
             employee.delete()
-            print(f'🗑️ Employee {id_} deleted (Reviews cascaded).')
+            print(f'Employee {id_} deleted (Reviews cascaded).')
         except Exception as exc:
-            print("❌ Error deleting employee: ", exc)
+            print("Error deleting employee: ", exc)
     else:
         print(f'Employee {id_} not found')
 
@@ -187,13 +175,11 @@ def list_department_employees():
     id_ = input("Enter the department's id: ")
     department = Department.find_by_id(id_)
     if department:
-        print(f"\n--- Employees in {department.name} ---")
         if department.employees:
             for employee in department.employees:
                 print(employee)
         else:
             print(f"No employees found in {department.name}.")
-        print("-----------------------------------")
     else:
         print(f'Department {id_} not found')
 
@@ -201,11 +187,8 @@ def list_all_reviews():
     """Lists all reviews."""
     reviews = Review.get_all()
     if reviews:
-        print("\n--- All Reviews ---")
         for review in reviews:
-            # Note: The Review.__repr__ should be descriptive
             print(review) 
-        print("-------------------")
     else:
         print("No reviews found.")
 
@@ -216,7 +199,7 @@ def find_review_by_id():
         review = Review.find_by_id(id_)
         print(review) if review else print(f'Review {id_} not found')
     except ValueError:
-        print("Invalid ID format. Please enter a number.")
+        print("Please enter a valid number.")
 
 def create_review():
     """Prompts user for details to create a new review."""
@@ -231,15 +214,15 @@ def create_review():
         rating = int(rating_str)
         
         if not reviewee:
-            print(f"❌ Error: Reviewee ID {reviewee_id} not found.")
+            print(f"Err: Reviewee ID {reviewee_id} not found.")
             return
         if not reviewer:
-            print(f"❌ Error: Reviewer ID {reviewer_id} not found.")
+            print(f"Err: Reviewer ID {reviewer_id} not found.")
             return
 
         review = Review.create(reviewee.id, reviewer.id, rating, content)
-        print(f'✅ Success: Review added for {reviewee.first_name} by {reviewer.first_name}.')
+        print(f'Success: Review added for {reviewee.first_name} by {reviewer.first_name}.')
     except ValueError:
-        print("❌ Error: Rating and IDs must be numbers.")
+        print("Error: Rating and IDs must be numbers.")
     except Exception as exc:
-        print("❌ Error creating review: ", exc)        
+        print("Error creating review: ", exc)        
