@@ -196,3 +196,50 @@ def list_department_employees():
         print("-----------------------------------")
     else:
         print(f'Department {id_} not found')
+
+def list_all_reviews():
+    """Lists all reviews."""
+    reviews = Review.get_all()
+    if reviews:
+        print("\n--- All Reviews ---")
+        for review in reviews:
+            # Note: The Review.__repr__ should be descriptive
+            print(review) 
+        print("-------------------")
+    else:
+        print("No reviews found.")
+
+def find_review_by_id():
+    """Finds a review by its ID."""
+    id_ = input("Enter the review's id: ")
+    try:
+        review = Review.find_by_id(id_)
+        print(review) if review else print(f'Review {id_} not found')
+    except ValueError:
+        print("Invalid ID format. Please enter a number.")
+
+def create_review():
+    """Prompts user for details to create a new review."""
+    reviewee_id = input("Enter the ID of the employee being reviewed (Reviewee ID): ")
+    reviewer_id = input("Enter the ID of the employee writing the review (Reviewer ID): ")
+    rating_str = input("Enter rating (1-5): ")
+    content = input("Enter review content/notes: ")
+    
+    try:
+        reviewee = Employee.find_by_id(reviewee_id)
+        reviewer = Employee.find_by_id(reviewer_id)
+        rating = int(rating_str)
+        
+        if not reviewee:
+            print(f"❌ Error: Reviewee ID {reviewee_id} not found.")
+            return
+        if not reviewer:
+            print(f"❌ Error: Reviewer ID {reviewer_id} not found.")
+            return
+
+        review = Review.create(reviewee.id, reviewer.id, rating, content)
+        print(f'✅ Success: Review added for {reviewee.first_name} by {reviewer.first_name}.')
+    except ValueError:
+        print("❌ Error: Rating and IDs must be numbers.")
+    except Exception as exc:
+        print("❌ Error creating review: ", exc)        

@@ -114,7 +114,10 @@ from .helpers import (
     create_employee,
     update_employee,
     delete_employee,
-    list_department_employees
+    list_department_employees,
+    create_review,        
+    find_review_by_id,    
+    list_all_reviews,
 )
 
 
@@ -141,7 +144,10 @@ def menu():
     print("11. Update employee")
     print("12. Delete employee")
     print("13. List all employees in a department")
-    # You could add Review management options here if needed (e.g., Add Review)
+    print("--- Review Management ---")
+    print("14. Add a new review")
+    print("15. Find review by id")
+    print("16. List all reviews")
     print("-----------------------------")
     print("0. Exit the program")
 
@@ -191,6 +197,12 @@ def main():
             delete_employee()
         elif choice == "13":
             list_department_employees()
+            elif choice == "14":
+            create_review()
+        elif choice == "15":
+            find_review_by_id()
+        elif choice == "16":
+            list_all_reviews()
         else:
             print("❗ Invalid choice. Please select a number from the menu.")
 
