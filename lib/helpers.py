@@ -1,96 +1,198 @@
 # lib/helpers.py
 
-# def helper_1():
-#     print("Performing useful function#1.")
+from .models.department import Department # Use relative imports
+from .models.employee import Employee
+from .models.review import Review # Include Review for completeness
+from sqlalchemy.exc import IntegrityError 
+
+# --- EXIT FUNCTION ---
+
+def exit_program():
+    print("Goodbye!")
+    exit()
+
+# ----------------------------------------------------------------------
+## Department Functions
+# ----------------------------------------------------------------------
+
+def list_departments():
+    departments = Department.get_all()
+    if departments:
+        print("\n--- All Departments ---")
+        for department in departments:
+            print(department)
+        print("-----------------------")
+    else:
+        print("No departments found.")
 
 
-# def exit_program():
-#     print("Goodbye!")
-#     exit()
-# lib/helpers.py
-from sqlalchemy import select
-from lib.models.__init__ import Session
-# Import the models to use them in the functions
-from lib.models.department import Department
-from lib.models.employee import Employee
-from lib.models.review import Review
+def find_department_by_name():
+    name = input("Enter the department's name: ")
+    department = Department.find_by_name(name)
+    print(department) if department else print(
+        f'Department "{name}" not found')
 
-## --- Department CRUD ---
 
-def create_department(name, location):
-    """Creates and saves a new Department record."""
-    with Session() as session:
-        new_dept = Department(name=name, location=location)
-        session.add(new_dept)
-        session.commit()
-        print(f"✅ Department '{name}' created with ID {new_dept.id}")
-        return new_dept
+def find_department_by_id():
+    id_ = input("Enter the department's id: ")
+    try:
+        department = Department.find_by_id(id_)
+        print(department) if department else print(f'Department {id_} not found')
+    except ValueError:
+        print("Invalid ID format. Please enter a number.")
 
-def get_all_departments():
-    """Retrieves all departments from the database."""
-    with Session() as session:
-        # Using SQLAlchemy 2.0 style select() statement
-        statement = select(Department)
-        departments = session.scalars(statement).all()
-        return departments
 
-## --- Employee CRUD ---
+def create_department():
+    name = input("Enter the department's name: ")
+    location = input("Enter the department's location: ")
+    try:
+        department = Department.create(name, location)
+        print(f'✅ Success: {department}')
+    except IntegrityError as exc:
+        print(f"❌ Error: Department '{name}' already exists or data invalid.")
+    except Exception as exc:
+        print("❌ Error creating department: ", exc)
 
-def create_employee(first_name, last_name, salary, dept_id):
-    """Creates and saves a new Employee record."""
-    with Session() as session:
-        # Check if department exists
-        dept = session.get(Department, dept_id)
-        if not dept:
-            print(f"❌ Error: Department with ID {dept_id} not found.")
-            return None
-            
-        new_employee = Employee(
-            first_name=first_name, 
-            last_name=last_name, 
-            salary=salary, 
-            department_id=dept_id
-        )
-        session.add(new_employee)
-        session.commit()
-        print(f"✅ Employee '{first_name} {last_name}' added to {dept.name}.")
-        return new_employee
 
-def get_employee_by_id(employee_id):
-    """Retrieves a single employee by their ID."""
-    with Session() as session:
-        return session.get(Employee, employee_id)
+def update_department():
+    id_ = input("Enter the department's id: ")
+    department = Department.find_by_id(id_)
+    
+    if department:
+        try:
+            name = input(f"Enter the department's new name (Current: {department.name}): ") or department.name
+            location = input(f"Enter the department's new location (Current: {department.location}): ") or department.location
 
-## --- Review CRUD ---
+            department.name = name
+            department.location = location
 
-def add_review(reviewee_id, reviewer_id, rating, content):
-    """Adds a review from one employee (reviewer) to another (reviewee)."""
-    with Session() as session:
-        # It's good practice to ensure both employees exist
-        reviewee = session.get(Employee, reviewee_id)
-        reviewer = session.get(Employee, reviewer_id)
+            department.update() 
+            print(f'✅ Success: {department}')
+        except Exception as exc:
+            print("❌ Error updating department: ", exc)
+    else:
+        print(f'Department {id_} not found')
+
+
+def delete_department():
+    id_ = input("Enter the department's id: ")
+    department = Department.find_by_id(id_)
+    
+    if department:
+        try:
+            department.delete()
+            print(f'🗑️ Department {id_} deleted (Employees cascaded).')
+        except Exception as exc:
+            print("❌ Error deleting department: ", exc)
+    else:
+        print(f'Department {id_} not found')
+
+# ----------------------------------------------------------------------
+## Employee Functions
+# ----------------------------------------------------------------------
+
+def list_employees():
+    employees = Employee.get_all()
+    if employees:
+        print("\n--- All Employees ---")
+        for employee in employees:
+            print(employee)
+        print("---------------------")
+    else:
+        print("No employees found.")
+
+
+def find_employee_by_name():
+    first_name = input("Enter employee's first name: ")
+    last_name = input("Enter employee's last name: ")
+    employee = Employee.find_by_full_name(first_name, last_name)
+    if employee:
+        print(employee)
+    else:
+        print(f"Employee {first_name} {last_name} not found.")
+
+def find_employee_by_id():
+    id_ = input("Enter the employee's id: ")
+    try:
+        employee = Employee.find_by_id(id_)
+        print(employee) if employee else print(f'Employee {id_} not found')
+    except ValueError:
+        print("Invalid ID format. Please enter a number.")
+
+def create_employee():
+    first_name = input("Enter employee's first name: ")
+    last_name = input("Enter employee's last name: ")
+    salary_str = input("Enter employee's salary: ")
+    dept_id_str = input("Enter department ID: ")
+    try:
+        salary = int(salary_str)
+        dept_id = int(dept_id_str)
         
-        if not reviewee or not reviewer:
-            print("❌ Error: One or both employee IDs are invalid.")
-            return None
+        # Check if department exists (best handled in the model create method or here)
+        if not Department.find_by_id(dept_id):
+            print(f"❌ Error: Department ID {dept_id} not found.")
+            return
 
-        new_review = Review(
-            reviewee_id=reviewee_id,
-            reviewer_id=reviewer_id,
-            rating=rating,
-            content=content
-        )
-        session.add(new_review)
-        session.commit()
-        print(f"✅ Review added for {reviewee.first_name} by {reviewer.first_name}.")
-        return new_review
+        employee = Employee.create(first_name, last_name, salary, dept_id)
+        print(f'✅ Success: {employee}')
+    except ValueError:
+        print("❌ Error: Salary and Department ID must be numbers.")
+    except Exception as exc:
+        print("❌ Error creating employee: ", exc)
 
-# Example of a common utility function
-def get_employee_reviews(employee_id):
-    """Retrieves all reviews received by a specific employee."""
-    with Session() as session:
-        employee = session.get(Employee, employee_id)
-        if employee:
-            # Access the relationship attribute defined in the Employee model
-            return employee.received_reviews
-        return []
+
+def update_employee():
+    id_ = input("Enter the employee's id: ")
+    employee = Employee.find_by_id(id_)
+    
+    if employee:
+        try:
+            new_salary_str = input(f"Enter new salary (Current: {employee.salary}): ")
+            if new_salary_str:
+                employee.salary = int(new_salary_str)
+            
+            # Example: Update department ID
+            new_dept_id_str = input(f"Enter new department ID (Current: {employee.department_id}): ")
+            if new_dept_id_str:
+                new_dept_id = int(new_dept_id_str)
+                if not Department.find_by_id(new_dept_id):
+                    print(f"❌ Error: Department ID {new_dept_id} not found. Update cancelled.")
+                    return
+                employee.department_id = new_dept_id
+
+            employee.update() 
+            print(f'✅ Success: {employee}')
+        except ValueError:
+            print("❌ Error: Salary or Department ID must be a number.")
+        except Exception as exc:
+            print("❌ Error updating employee: ", exc)
+    else:
+        print(f'Employee {id_} not found')
+
+
+def delete_employee():
+    id_ = input("Enter the employee's id: ")
+    employee = Employee.find_by_id(id_)
+    if employee:
+        try:
+            employee.delete()
+            print(f'🗑️ Employee {id_} deleted (Reviews cascaded).')
+        except Exception as exc:
+            print("❌ Error deleting employee: ", exc)
+    else:
+        print(f'Employee {id_} not found')
+
+
+def list_department_employees():
+    id_ = input("Enter the department's id: ")
+    department = Department.find_by_id(id_)
+    if department:
+        print(f"\n--- Employees in {department.name} ---")
+        if department.employees:
+            for employee in department.employees:
+                print(employee)
+        else:
+            print(f"No employees found in {department.name}.")
+        print("-----------------------------------")
+    else:
+        print(f'Department {id_} not found')
