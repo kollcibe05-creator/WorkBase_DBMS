@@ -30,7 +30,7 @@ from .helpers import (
 )
 def clear_screen():
     """Clears the console screen."""
-    if platform.system() == "Windows":
+    if platform.system() == "Windows":    #contigency
         os.system('cls')
     else:
         os.system('clear')
