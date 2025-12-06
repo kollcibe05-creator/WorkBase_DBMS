@@ -174,16 +174,44 @@ Past that, CLIs can be whatever you'd like, as long as you follow the requiremen
 
 ## Functionality
 # Department.py
-It contains the model `*Department*` which has setters and getters which validates the user input.
-It also 
+It contains the model `Department` which has the following functionalitites.
+1. *__repr__*: In it is the modified output of a class instance to improve clarity.
+2. *__tablename__*: Species the table in the database that the objects will be mapped to.
+   Below it are the constraints that restricts some field inputs to be of certain data types and length.
+3. *get_all()*: A class method that returns all the departments mapped into the departments table.
+4. *find_by_id()*: A class method that returns a department instance in the database of the id given.
+5. *find_by_name()*: A class method that returns a department instance in the database of the name given.
+6. *create()*: A class method that creates a new department instance and persists it to the database using sessions.
+5. *update()*: A class method that updates the department instance and persists it to the database using sessions.
+8. *delete()*: A class method that deletes a department instance and from the database using sessions.
+
 
 # Employee.py
-It contains the model `*Employee*` which has setters and getters which validates the user input.
-It also
+It contains the model `Employee` which has the functionalities:
+1. *__repr__*: In it is the modified output of a class instance to improve clarity.
+2. *__tablename__*: Species the table in the database that the objects will be mapped to.
+    Below it are the constraints that restricts some field inputs to be of certain data types and length.
+    Fields such as *received_reviews*, *given_reviews* and *department* have been used to create the relationship with the departments and reviews Models and tables. 
+3. *get_all()*: A class method that returns all the employees mapped into the departments table.
+4. *find_by_id()*: A class method that returns an employee instance in the database of the id given.
+5. *find_by_full_name()*: A class method that returns an employee instance in the database of the names given.
+6. *create()*: A class method that creates a new employee instance and persists it to the database using sessions.
+5. *update()*: A class method that updates the employee instance details and persists it to the database using sessions.
+8. *delete()*: A class method that deletes an employee instance and from the database using sessions.
 
 # Review.py
-It contains the model `*Review*` which has setters and getters which validates the user input.
-It also 
+It contains the model `Review` which has the functionalitites:
+1. *__repr__*: In it is the modified output of a class instance to improve clarity.
+2. *__tablename__*: Species the table in the database that the objects will be mapped to.
+    Below it are the constraints that restricts some field inputs to be of certain data types and length.
+    Fields *reviewee* and *reviewer*  have been used to create  relationship with the employee Model and table in the database. 
+3. *get_all()*: A class method that returns all the reviews mapped into the departments table.
+4. *find_by_id()*: A class method that returns a review instance in the database of the id given.
+5. *create()*: A class method that creates a new review instance and persists it to the database using sessions.
+6. *update()*: A class method that updates the review instance details and persists it to the database using sessions.
+7. *delete()*: A class method that deletes a review instance and from the database using sessions.
+<!-- 5. *find_by_name()*: A class method that returns a review instance in the database of the names given. -->
+
 
 
 

@@ -33,11 +33,10 @@ def clear_screen():
     if platform.system() == "Windows":
         os.system('cls')
     else:
-        # Unix-like systems (Linux, macOS)
         os.system('clear')
 def pause():
     """Pauses execution until the user presses Enter."""
-    input("\nPress Enter to return to the menu...")        
+    input("\nPress Enter to return to  menu...")        
 
 def menu():
     print("--- Department----")
