@@ -1,4 +1,7 @@
 
+import os
+import platform 
+import time
 
 from .models.__init__ import recreate_db 
 from .models.department import Department
@@ -25,7 +28,16 @@ from .helpers import (
     find_review_by_id,    
     list_all_reviews,
 )
-
+def clear_screen():
+    """Clears the console screen."""
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        # Unix-like systems (Linux, macOS)
+        os.system('clear')
+def pause():
+    """Pauses execution until the user presses Enter."""
+    input("\nPress Enter to return to the menu...")        
 
 def menu():
     print("--- Department----")
@@ -54,7 +66,7 @@ def menu():
 
 def main():
     try:
-        # recreate_db()
+        recreate_db()
         seed_database()
         print("Database initialized successfully.")
     except Exception as Error:
@@ -62,6 +74,7 @@ def main():
         return 
         
     while True:
+        clear_screen()
         menu()
         choice = input("> ")
         
@@ -69,38 +82,55 @@ def main():
             exit_program()
         elif choice == "1":
             list_departments()
+            pause()
         elif choice == "2":
             find_department_by_name()
+            pause()
         elif choice == "3":
             find_department_by_id()
+            pause()
         elif choice == "4":
             create_department()
+            pause()
         elif choice == "5":
             update_department()
+            pause()
         elif choice == "6":
             delete_department()
+            pause()
         elif choice == "7":
             list_employees()
+            pause()
         elif choice == "8":
             find_employee_by_name()
+            pause()
         elif choice == "9":
             find_employee_by_id()
+            pause()
         elif choice == "10":
             create_employee()
+            pause()
         elif choice == "11":
             update_employee()
+            pause()
         elif choice == "12":
             delete_employee()
+            pause()
         elif choice == "13":
             list_department_employees()
+            pause()
         elif choice == "14":
             create_review()
+            pause()
         elif choice == "15":
             find_review_by_id()
+            pause()
         elif choice == "16":
             list_all_reviews()
+            pause()
         else:
             print("Invalid choice.")
+            pause()
 
 
 if __name__ == "__main__":
